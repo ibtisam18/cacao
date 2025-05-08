@@ -320,7 +320,7 @@ const AboutUs = () => {
       <div className="card shadow-sm h-100 text-center">
         <div className="card-body">
           <img
-            src="/images/Alex.jpeg.jfif"
+            src="/images/alex.jpeg.jfif"
             alt="Tempering Process"
             style={{
               width: '320px',
@@ -340,7 +340,7 @@ const AboutUs = () => {
       <div className="card shadow-sm h-100 text-center">
         <div className="card-body">
           <img
-            src="/images/Zuheila.jpeg.jfif"
+            src="/images/zuheila.jpeg.jfif"
             alt="Tempering Process"
             style={{
               width: '320px',
