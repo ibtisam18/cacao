@@ -1,52 +1,36 @@
-// Import necessary hooks and modules from React and React Router
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Chatbot = () => {
-  // Initialize navigation function
   const navigate = useNavigate();
-
-  // Set initial state with a welcome bot message
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Hi there! 👋 Welcome to Cacao — your chocolate paradise. How can I help you today?' },
   ]);
-
-  // State to handle user input text
   const [input, setInput] = useState('');
-  // State to track hover status of send button
   const [buttonHover, setButtonHover] = useState(false);
-  // State to indicate if bot is "typing"
   const [isTyping, setIsTyping] = useState(false);
-  // State to add glow animation on first click
   const [isClicked, setIsClicked] = useState(false);
-  // State to manage speech synthesis toggle
   const [isSpeaking, setIsSpeaking] = useState(false);
 
-  // Ref to keep track of the bottom of the chat for auto-scrolling
   const messagesEndRef = useRef(null);
 
-  // Auto-scroll to the latest message or typing indicator when they change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  // Function to handle sending a message
   const handleSend = (questionText = null) => {
     const finalInput = questionText || input;
     if (!finalInput.trim()) return;
 
-    // Create user message and update state
     const userMessage = { sender: 'user', text: finalInput };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
 
-    setIsTyping(true); // Show typing indicator
+    setIsTyping(true);
 
-    // Default bot reply
     let botReply = "Sorry, I didn't understand that.";
     const lowerInput = finalInput.toLowerCase();
 
-    // Check for various keyword matches to generate replies
     if (lowerInput.includes("chocolate")) {
       botReply = "We offer premium handcrafted chocolate made with love 🍫.";
     } else if (lowerInput.includes("products")) {
@@ -63,6 +47,10 @@ const Chatbot = () => {
       botReply = "Yes, we deliver! Enjoy fast, reliable delivery across Kenya.";
     } else if (lowerInput.includes("payment") || lowerInput.includes("mpesa")) {
       botReply = "We accept M-Pesa and other mobile money payments for your convenience.";
+    } else if (lowerInput.includes("halal")) {
+      botReply = "Yes, our chocolates are halal certified and safe for consumption.";
+    } else if (lowerInput.includes("vegan")) {
+      botReply = "We offer vegan-friendly options! Just check the label or ask us.";
     } else if (
       lowerInput.includes("store hours") ||
       lowerInput.includes("open") ||
@@ -74,42 +62,34 @@ const Chatbot = () => {
       lowerInput.includes("thanks") ||
       lowerInput.includes("bye")
     ) {
-      botReply = "You're welcome! Have a sweet day with Cacao.";
+      botReply = "You're welcome! Have a sweet day with Cacao 🍫😊.";
     }
 
-    // Simulate delay and then show bot reply
     setTimeout(() => {
       setMessages(prev => [...prev, { sender: 'bot', text: botReply }]);
       setIsTyping(false);
-
-      // If speech is enabled, speak the message
       if (isSpeaking) {
         speakMessage(botReply);
       }
     }, 1000);
 
-    // Clear input field
     setInput('');
   };
 
-  // Use browser speech synthesis to speak message
   const speakMessage = (message) => {
     const speech = new SpeechSynthesisUtterance(message);
     speech.lang = 'en-US';
     window.speechSynthesis.speak(speech);
   };
 
-  // Navigate back to the main page
   const handleGoBack = () => {
     navigate('/main');
   };
 
-  // Toggle speech synthesis on/off
   const toggleSpeech = () => {
     setIsSpeaking(prev => !prev);
   };
 
-  // Predefined common user questions
   const quickQuestions = [
     "What is Cacao about?",
     "Tell me about your products",
@@ -122,18 +102,15 @@ const Chatbot = () => {
     "Thank you",
     "Bye",
   ];
+  
 
   return (
     <div style={styles.container}>
-      {/* Main chatbot container with click animation */}
       <div
         style={isClicked ? { ...styles.chatbotContainer, animation: 'glowOnClick 0.6s ease-out' } : styles.chatbotContainer}
         onClick={() => setIsClicked(true)}
       >
-        {/* Header */}
         <div style={styles.chatbotHeader}>💬 Cacao Bot</div>
-
-        {/* Message display area */}
         <div style={styles.chatbotMessages}>
           {messages.map((msg, index) => (
             <div key={index} style={msg.sender === 'bot' ? styles.botMessage : styles.userMessage}>
@@ -145,11 +122,8 @@ const Chatbot = () => {
               <span style={styles.typingIndicator}>...</span>
             </div>
           )}
-          {/* Reference point to scroll to bottom */}
           <div ref={messagesEndRef} />
         </div>
-
-        {/* Input and send button */}
         <div style={styles.chatbotInput}>
           <input
             type="text"
@@ -168,7 +142,6 @@ const Chatbot = () => {
           </button>
         </div>
 
-        {/* Quick question suggestion buttons */}
         <div style={styles.quickButtonsContainer}>
           {quickQuestions.map((question, i) => (
             <button
@@ -182,15 +155,13 @@ const Chatbot = () => {
         </div>
       </div>
 
-      {/* Buttons for navigation and speech toggle */}
       <button onClick={handleGoBack} style={styles.goBackButton}>Go Back</button>
       <button onClick={toggleSpeech} style={styles.speechButton}>
         {isSpeaking ? "Stop Speaking" : "Start Speaking"}
       </button>
 
-      {/* Custom animations for UI styling */}
       <style>
-        {`
+        {
           @keyframes glow {
             0% { box-shadow: 0 0 10px rgba(255, 165, 0, 0.7); }
             50% { box-shadow: 0 0 20px rgba(255, 165, 0, 1); }
@@ -219,15 +190,13 @@ const Chatbot = () => {
             50% { background-color: #FF9800; }
             100% { background-color: #FFB74D; }
           }
-        `}
+        }
       </style>
     </div>
   );
 };
 
-// Styles object for inline CSS
 const styles = {
-  // Entire chatbot page container
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -237,7 +206,6 @@ const styles = {
     alignItems: 'center',
     padding: '20px',
   },
-  // Chatbot chat box
   chatbotContainer: {
     width: '100%',
     maxWidth: '800px',
