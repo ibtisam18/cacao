@@ -13,7 +13,7 @@ const Splash = () => {
 
     // Timer to redirect to the signup page after 10 seconds
     const redirectTimer = setTimeout(() => {
-      navigate('/signup');
+      navigate('/main');
     }, 10000);
 
     // Cleanup both timers on unmount
