@@ -6,15 +6,15 @@ const Splash = () => {
   const navigate = useNavigate(); // ✅ Hook to programmatically navigate to another route
 
   useEffect(() => {
-    // Timer to start fading out after 9 seconds
+    // Timer to start fading out after 4 seconds
     const timer = setTimeout(() => {
       setFadeOut(true);
-    }, 9000);
+    }, 4000);
 
-    // Timer to redirect to the signup page after 10 seconds
+    // Timer to redirect to the signup page after 5 seconds
     const redirectTimer = setTimeout(() => {
       navigate('/signup');
-    }, 10000);
+    }, 5000);
 
     // Cleanup both timers on unmount
     return () => {
