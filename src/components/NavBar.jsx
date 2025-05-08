@@ -12,7 +12,7 @@ export const NavBar = () => {
           <nav className="navbar navbar-expand-md navbar-dark bg-brown">
             
             {/* Brand logo/text that links to home */}
-            <Link to="/" className="navbar-brand fw-bolder display-1">Cacao</Link>
+            <Link to="/signin" className="navbar-brand fw-bolder display-1">Cacao</Link>
             
             {/* Toggle button for collapsed menu on small screens */}
             <button 
