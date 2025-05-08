@@ -6,6 +6,7 @@ import 'aos/dist/aos.css';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Aboutus from './components/Aboutus';
+import Addproduct from './components/AddProducts';
 import MpesaPayment from './components/MpesaPayment';
 import GetProduct from './components/GetProducts';
 import Main from './components/Main';
@@ -42,6 +43,7 @@ function App() {
           <Route path="/mpesapayment" element={<MpesaPayment />} />
           <Route path="/getproduct" element={<GetProduct />} />
           <Route path="/aboutus" element={<Aboutus />} />
+          <Route path="/addproduct" element={<Addproduct />} />
           <Route path="/main" element={<Main />} />
           <Route path="/" element={<Splash />} /> {/* Splash screen is now the default route */}
           <Route path="/chatbot" element={<Chatbot />} /> {/* Chatbot only appears on this route */}
