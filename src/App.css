@@ -1,0 +1,838 @@
+.App {
+  text-align: center;
+  font-weight: bolder;
+  background-color: #F5F5DC; /* Beige background */
+  min-height: 850px;
+  position: relative;
+
+}body, html {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  width: 100%; /* Make sure body and html take full width */
+}
+
+/* Form Styling */
+.form {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 600px;
+  border-radius: 15px;
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-align: center;
+}
+
+/* Form Header (Sign In) */
+.form h1 {
+  font-weight: 900;
+  font-size: 3rem;
+  color: #5C4033; /* Soft Rich Brown */
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+
+/* Labels and Colors */
+.label {
+  display: block;
+  text-align: left;
+  margin-bottom: 2px;
+  font-size: 1rem;
+  color: #C68E17; /* Caramel Brown */
+}
+
+.text-light {
+  color: #FFC107; /* Amber */
+}
+
+/* Button Styles */
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid #FFC107;
+  border-radius: 0.375rem;
+  background-color: #e0a800;
+  color: white;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}
+
+.button:hover {
+  background-color: #e0a800;
+}
+
+/* Remember Me Text */
+.remember-me-text {
+  color: black !important;
+}
+
+/* Sign In Button */
+input[type="submit"].button,
+button.button {
+  background-color: #C68E17;
+  color: white;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #FFC107;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"].button:hover,
+button.button:hover {
+  background-color: #FFF8E1;
+}
+
+/* Sign Up Text and Link */
+#label {
+  color: black;
+}
+
+#label a {
+  color: #C68E17;
+  text-decoration: none;
+}
+
+#label a:hover {
+  color: #800020;
+  text-decoration: underline;
+}
+
+/* OR Continue Section */
+.Or-continue-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+/* Sign-up form styles */
+.signup-form {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  max-width: 400px;
+  margin: 50px auto;
+  border-radius: 10px;
+}
+
+.signup-form h1 {
+  font-size: 2.5rem;
+  color: #C68E17;
+  margin-bottom: 20px;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #FFC107;
+  border-radius: 5px;
+  background-color: #F5F5F5;
+  font-size: 1rem;
+}
+
+.signup-form input[type="submit"] {
+  background-color: #C68E17;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signup-form input[type="submit"]:hover {
+  background-color: #800020;
+}
+
+.signup-form .form-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup-form .form-footer a {
+  color: #FFC107;
+  text-decoration: none;
+}
+
+.signup-form .form-footer a:hover {
+  color: #800020;
+  text-decoration: underline;
+}
+
+/* Password strength checker */
+.password-strength {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #800020;
+}
+
+.password-strength span {
+  margin-left: 10px;
+}
+
+.password-strength .weak {
+  color: red;
+}
+
+.password-strength .medium {
+  color: yellow;
+}
+
+.password-strength .strong {
+  color: green;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .form {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .cacao {
+    font-size: 2.5rem;
+  }
+
+  .about-container {
+    padding: 10px;
+  }
+
+  .about-text {
+    font-size: 14px;
+  }
+
+  .about-story {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .signup-form {
+    width: 90%;
+  }
+
+  .signup-form h1 {
+    font-size: 2rem;
+  }
+
+  .signup-form input {
+    padding: 8px;
+  }
+
+  .signup-form input[type="submit"] {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cacao {
+    font-size: 2rem;
+  }
+
+  .form h1 {
+    font-size: 2.5rem;
+  }
+
+  .about-container {
+    padding: 5px;
+  }
+
+  .about-text {
+    font-size: 12px;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .signup-form {
+    width: 95%;
+  }
+
+  .signup-form h1 {
+    font-size: 1.8rem;
+  }
+
+  .signup-form input {
+    padding: 6px;
+  }
+
+  .signup-form input[type="submit"] {
+    padding: 8px;
+  }
+}
+
+
+.line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #C68E17;
+  margin: 0 10px;
+}
+
+.or-text {
+  color: #C68E17;
+  font-size: 1.2rem;
+  text-transform: lowercase;
+  font-weight: normal;
+}
+
+.typing-text {
+  display: inline-block;
+  border-right: 2px solid #800020; /* Burgundy cursor */
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  animation: typing 3s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
+  font-size: 1.5rem;
+  color: #800020; /* Same color as Sign In heading */
+  margin-top: 10px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 300px; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #800020; }
+}
+
+.about-container {
+  padding: 20px;
+}
+
+.about-header {
+  text-align: center;
+}
+
+.about-us-title {
+  font-size: 2rem;
+  color: #333;
+}
+
+.about-section {
+  margin: 20px 0;
+}
+
+.left-aligned-heading {
+  text-align: left;
+}
+
+.about-story {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.about-text {
+  text-align: left;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.about-image {
+  width: 100%;
+  border-radius: 8px;
+  height: auto;
+  object-fit: cover;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.card-body p {
+  margin: 0;
+  flex-grow: 1;
+}
+
+.card-body img {
+  margin-top: 10px;
+}
+
+.underline-animation {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: rgb(160, 52, 52);
+  transition: width 0.5s ease;
+}
+
+h2:hover .underline-animation {
+  width: 100%;
+}
+
+
+.container {
+  display: block;
+}
+
+.caramel-button {
+  padding: 2px 6px;
+  font-size: 20px;
+  border-radius: 6px;
+  background-color: #FFD39B; /* light caramel */
+  color: #4A2C12; /* dark caramel text */
+  border: none;
+  cursor: pointer;
+  width: auto;
+  max-width: 100px;
+  margin-bottom: 10px;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition */
+}
+
+.caramel-button:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+}
+
+.sustainability-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: #E4D8B4;
+  padding: 2rem;
+  gap: 2rem;
+  align-items: center;
+}
+
+.sustainability-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #C68E17; /* Caramel Brown text */
+}
+
+.sustainability-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease, filter 0.3s ease; /* Added transition */
+}
+
+.sustainability-image img:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+  filter: brightness(1.1); /* Slight brightness increase */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+}
+
+.underline-animation {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: white;
+  transition: width 0.5s ease; /* Transition for the underline animation */
+}
+
+.underline-animation.active {
+  width: 100%; /* When active, the underline expands */
+}
+
+.hover-image {
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition */
+}
+
+.hover-image:hover {
+  transform: scale(1.1); /* Slight zoom effect */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+}
+
+.home-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-image-container {
+  width: 100%;
+  height: 300px;         /* Fixed container height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.top-image {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+.custom-button {
+  background-color: #C68E17;
+  color: #FFC107;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition */
+}
+
+.custom-button:hover {
+  background-color: #a76d13;
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+.featured-section {
+  text-align: center;
+  padding: 50px 15px; /* Padding for spacing around the section */
+  background-color: #f8f8f8; /* Light background color */
+  margin-top: 20px; /* Space between NavBar and the section */
+}
+
+.featured-section h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.featured-section p {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for scale and shadow */
+}
+
+.card:hover {
+  transform: translateY(-10px); /* Lift the card */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Add a larger shadow on hover */
+}
+
+.card-image {
+  width: 100%;
+  height: 300px; /* Increased height for larger images */
+  object-fit: cover; /* Ensures the image fills the space without stretching */
+  border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.card-cost {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #FFC107; /* Amber */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Added transition */
+}
+
+.btn:hover {
+  background-color: #e68900; /* Darker amber on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+.hover-effect:hover {
+  transform: translateY(-8px);
+  transition: all 0.3s ease;
+  box-shadow: 0 12px 24px rgba(92, 64, 51, 0.3);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.bg-brown {
+  background-color: #4B2E14; /* Dark Brown */
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-right: 20px;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #C68E17; /* Amber color on hover */
+}
+
+.navbar-nav .nav-link.active {
+  font-weight: bold;
+  color: #FFC107; /* Amber color for active link */
+}
+
+.navbar-toggler-icon {
+  background-color: #C68E17; /* Amber color for toggler */
+}
+
+.navbar-brand {
+  font-size: 80px; /* Increase font size */
+  font-weight: bold;
+  color: #FFC107; /* Amber color */
+  cursor: pointer;
+  letter-spacing: 2px;
+  text-shadow: 0px 0px 10px #C68E17, 0px 0px 20px #C68E17, 0px 0px 30px #C68E17; /* Brown glow effect */
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  border: none; /* Remove button border */
+  background: none; /* Remove default button background */
+}
+
+.navbar-brand:hover {
+  transform: rotate(-5deg);
+}
+
+.navbar-brand.tilted {
+  transform: rotate(10deg); /* Tilt effect when clicked */
+  text-shadow: 0px 0px 20px #C68E17, 0px 0px 30px #C68E17; /* Increased glow when clicked */
+}
+
+.navbar-nav {
+  margin-left: auto;
+}
+
+/* Apply chocolate brown theme */
+.navbar {
+  width: 100%;  /* Full width */
+  height: 80px;  /* Adjust thickness of the navbar */
+  background-color: #6F4F1F; /* Chocolate brown */
+  color: #FFF; /* White text for navbar */
+  position: fixed; /* Fixed position to stay at top */
+  top: 0; /* Stay at the top of the page */
+  left: 0; /* Align to the left */
+  z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+.navbar .navbar-brand {
+  font-weight: bolder;
+  font-size: 2.5rem; /* Adjust the font size for visibility */
+  color: #FFF;  /* White text for 'Cacao' */
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.2rem;
+  padding: 10px 15px;
+  color: #FFF; /* White text color for the links */
+}
+
+.navbar-nav .nav-link.active {
+  background-color: #4B2E06; /* Darker brown for active link */
+  color: #FFC107;  /* Amber text when active */
+}
+
+.navbar-toggler {
+  border-color: #FFF; /* White border color for toggler */
+}
+
+.navbar-toggler-icon {
+  background-color: #FFF; /* White toggler icon */
+}
+/* Footer background and overall style */
+footer {
+  background-color: #6F4F1F; /* Dark chocolate brown */
+  color: white; /* White text for contrast */
+  padding: 30px 0;
+  border-top: 5px solid #FFC107; /* Golden top border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Hover effect on footer links */
+footer a {
+  color: white; /* Links will be white */
+  text-decoration: none;
+  transition: color 0.3s, transform 0.3s ease-in-out;
+}
+
+/* Hover effect for footer links */
+footer a:hover {
+  color: #FFC107; /* Golden color for hover effect */
+  transform: scale(1.1);
+}
+
+/* Section headings */
+footer h5 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #FFC107; /* Golden color for headings */
+  margin-bottom: 15px;
+}
+
+/* Paragraph text in footer */
+footer p {
+  font-size: 0.9rem;
+  color: #e0e0e0; /* Slightly lighter text for readability */
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+/* Footer social icons */
+footer .text-center a {
+  margin: 0 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+footer .text-center a:hover {
+  transform: scale(1.1); /* Scale up on hover */
+  filter: brightness(1.2); /* Brighten the icons on hover */
+}
+
+/* Social media icons */
+footer .text-center img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for icons */
+}
+
+/* Footer bottom section (Copyright) */
+footer .text-center p {
+  font-size: 0.875rem;
+  color: #e0e0e0;
+  margin-top: 15px;
+  font-style: italic;
+}
+
+/* Footer on large screens */
+@media (min-width: 992px) {
+  footer .container {
+    max-width: 1200px;
+  }
+}
+
+/* Footer responsiveness */
+@media (max-width: 768px) {
+  footer {
+    padding: 20px 0;
+  }
+
+  footer .col-lg-6, footer .col-lg-3 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  footer .col-lg-6 h5, footer .col-lg-3 h5 {
+    font-size: 1.2rem;
+  }
+
+  footer .col-lg-6 p, footer .col-lg-3 p {
+    font-size: 0.85rem;
+  }
+}
+/* Hover effect for footer links */
+.link-hover {
+  transition: color 0.3s ease, transform 0.3s ease-in-out;
+}
+
+.link-hover:hover {
+  color: #FFC107; /* Golden color */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Hover effect for social media icons */
+.icon-hover:hover img {
+  transform: scale(1.1); /* Slightly scale up the icon */
+  filter: brightness(1.2); /* Brighten the icons */
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.navbar-brand1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 70px;
+  font-weight: bold;
+  color: #ffffff; /* White color */
+  text-align: center;
+  display: block;
+  margin: 20px auto;
+  letter-spacing: 2px;
+  text-decoration: none; /* Removes underline */
+  text-shadow: 0px 0px 5px #C68E17, 0px 0px 15px #C68E17;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar-brand1 .emoji {
+  font-size: 1.5em; /* Resize emoji */
+  vertical-align: middle;
+}

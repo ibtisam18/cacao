@@ -1,0 +1,31 @@
+/* Footer Styles */
+footer {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  footer .text-uppercase {
+    color: #C68E17; /* Caramel brown */
+  }
+  
+  footer .list-unstyled li a {
+    color: #5C4033; /* Dark Brown */
+  }
+  
+  footer .list-unstyled li a:hover {
+    color: #FFC107; /* Amber for hover effect */
+  }
+  
+  footer .text-muted {
+    color: #6c757d !important; /* Muted grey for text */
+  }
+  
+  footer .bg-dark {
+    background-color: #4b2903 !important; /* Dark brown */
+  }
+  
+  /* Icons styling */
+  footer .list-unstyled li p i {
+    margin-right: 10px;
+    color: #C68E17; /* Caramel brown for icons */
+  }
+  
