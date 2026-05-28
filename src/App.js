@@ -6,25 +6,29 @@ import 'aos/dist/aos.css';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Aboutus from './components/Aboutus';
-import Addproduct from './components/AddProducts';
+import AddProduct from './components/AddProducts';
 import MpesaPayment from './components/MpesaPayment';
 import GetProduct from './components/GetProducts';
 import Main from './components/Main';
-import Chatbot from './components/Chatbot';  
-import Splash from './components/Splash';  // Import the Splash component
+import Chatbot from './components/Chatbot';
+import Splash from './components/Splash';
+import Cart from './components/Cart';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function Header() {
   const location = useLocation();
-  const hideHeaderOnPaths = ['/signin', '/signup', '/']; // Paths without header
 
-  return !hideHeaderOnPaths.includes(location.pathname) ? (
+  // Hide header on these pages
+  const hideHeaderOnPaths = ['/', '/signin', '/signup', '/mpesapayment'];
+
+  if (hideHeaderOnPaths.includes(location.pathname)) return null;
+
+  return (
     <header className="App-header">
-      <h1 className="display-1 mt-5">
-      </h1>
+      <h1 className="display-1 mt-5"></h1>
     </header>
-  ) : null;
+  );
 }
 
 function App() {
@@ -38,15 +42,28 @@ function App() {
         <Header />
 
         <Routes>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
+          {/* Default — Splash screen */}
+          <Route path="/"             element={<Splash />} />
+
+          {/* Auth */}
+          <Route path="/signin"       element={<SignIn />} />
+          <Route path="/signup"       element={<SignUp />} />
+
+          {/* Main pages */}
+          <Route path="/main"         element={<Main />} />
+          <Route path="/getproduct"   element={<GetProduct />} />
+          <Route path="/addproduct"   element={<AddProduct />} />
+          <Route path="/aboutus"      element={<Aboutus />} />
+          <Route path="/cart"      element={<Cart />} />
+          
+
+          {/* Payment */}
           <Route path="/mpesapayment" element={<MpesaPayment />} />
-          <Route path="/getproduct" element={<GetProduct />} />
-          <Route path="/aboutus" element={<Aboutus />} />
-          <Route path="/addproduct" element={<Addproduct />} />
-          <Route path="/main" element={<Main />} />
-          <Route path="/" element={<Splash />} /> {/* Splash screen is now the default route */}
-          <Route path="/chatbot" element={<Chatbot />} /> {/* Chatbot only appears on this route */}
+          <Route path="/cart" element={<Cart/>} />
+          
+
+          {/* Chatbot */}
+          <Route path="/chatbot"      element={<Chatbot />} />
         </Routes>
       </div>
     </Router>

@@ -5,126 +5,189 @@ import Fake from "./fake";
 import axios from "axios";
 import '../App.css';
 
-// Signup component definition
 const SignUp = () => {
-    // State hooks to manage form inputs and UI feedback
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
-    const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
-    const [success, setSuccess] = useState(""); // Success message
-    const [error, setError] = useState(""); // Error message from API
-    const [loading, setLoading] = useState(false); // Loading state during API call
-    const [agreeToTerms, setAgreeToTerms] = useState(false); // Checkbox state for agreeing to terms
-    const [formError, setFormError] = useState(""); // Local form validation error message
+    const [showPassword, setShowPassword] = useState(false);
+    const [success, setSuccess] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [agreeToTerms, setAgreeToTerms] = useState(false);
+    const [formError, setFormError] = useState("");
+    const [focusedField, setFocusedField] = useState("");
 
-    const navigate = useNavigate(); // Hook to programmatically navigate
+    const navigate = useNavigate();
 
-    // Form submit handler
+    const glowStyle = (field) => ({
+        boxShadow: focusedField === field
+            ? '0 0 10px 3px rgba(255, 193, 7, 0.6)'
+            : 'none',
+        transition: 'box-shadow 0.3s ease',
+        borderColor: focusedField === field ? '#FFC107' : '',
+    });
+
     const submit = async (e) => {
         e.preventDefault();
 
-        // If terms are not agreed, show error and prevent submission
         if (!agreeToTerms) {
-            setFormError("Please agree to our Terms and Conditions before continuing 😊");
+            setFormError("Please agree to Terms and Conditions");
             return;
         }
 
-        setLoading(true); // Start loading
-        setError(""); // Clear previous errors
-        setFormError(""); // Clear form validation error
+        setLoading(true);
+        setError("");
+        setFormError("");
+        setSuccess("");
 
         try {
-            // Create FormData and append form fields
             const formData = new FormData();
             formData.append("username", username);
             formData.append("password", password);
             formData.append("email", email);
             formData.append("phone", phone);
 
-            // Send POST request to signup endpoint
-            const response = await axios.post("https://Ibtisam.pythonanywhere.com/api/signup", formData);
+            const response = await axios.post(
+                "https://Ibtisam.pythonanywhere.com/api/signup",
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
 
-            setLoading(false); // Stop loading
-            setSuccess(response.data.message); // Show success message
+            setLoading(false);
 
-            // Clear form fields
-            setUsername("");
-            setEmail("");
-            setPassword("");
-            setPhone("");
+            if (response.data.Success) {
+                setSuccess(response.data.Success);
+                setUsername("");
+                setEmail("");
+                setPassword("");
+                setPhone("");
+                setAgreeToTerms(false);
 
-            // Redirect to signin after 1 second
-            setTimeout(() => {
-                navigate('/signin');
-            }, 1000);
-        } catch (error) {
-            setLoading(false); // Stop loading
-            // Show error from server or fallback error message
-            setError(error.response?.data?.Message || "An error occurred.");
+                setTimeout(() => {
+                    navigate('/signin');
+                }, 1500);
+
+            } else if (response.data.error) {
+                setError(response.data.error);
+            }
+
+        } catch (err) {
+            setLoading(false);
+
+            setError(
+                err.response?.data?.error ||
+                err.response?.data?.Message ||
+                "Signup failed. Please try again."
+            );
         }
-    };
-
-    // Toggle the checkbox state
-    const handleCheckboxChange = () => {
-        setAgreeToTerms(!agreeToTerms);
     };
 
     return (
         <div className="signup-container">
-            <Fake /> {/* Possibly a decorative or banner component */}
+            <Fake />
             <br /><br />
 
-            {/* Signup form card */}
-            <div className="card shadow col-md-6 form p-4 mt-5">
-                <h1>Create an Account</h1>
-                <label>Join Cacao and enjoy premium chocolate</label>
+            <div
+                className="card shadow col-md-6 form p-4 mt-5"
+                style={{ textAlign: 'left' }}
+            >
 
-                {/* Feedback messages */}
-                {loading && <div className="alert alert-warning">{loading}</div>}
-                {success && <div className="alert alert-success">{success}</div>}
-                {error && <div className="alert alert-danger">{error}</div>}
-                {formError && <div className="alert alert-danger">{formError}</div>}
+                {/* Heading */}
+                <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
 
-                {/* Signup form */}
+                    <h1
+                        style={{
+                            color: '#6F4F1F',
+                            fontWeight: 'bold',
+                            textTransform: 'none',
+                            letterSpacing: '0',
+                            marginBottom: '4px',
+                        }}
+                    >
+                        Create an Account
+                    </h1>
+
+                    <p
+                        style={{
+                            color: '#6F4F1F',
+                            fontWeight: '600',
+                            fontSize: '1rem',
+                            margin: 0,
+                        }}
+                    >
+                        Join Cacao and enjoy premium chocolate
+                    </p>
+
+                </div>
+
+                {loading && (
+                    <div className="alert alert-warning">
+                        Signing up...
+                    </div>
+                )}
+
+                {success && (
+                    <div className="alert alert-success">
+                        {success}
+                    </div>
+                )}
+
+                {error && (
+                    <div className="alert alert-danger">
+                        {error}
+                    </div>
+                )}
+
+                {formError && (
+                    <div className="alert alert-danger">
+                        {formError}
+                    </div>
+                )}
+
                 <form onSubmit={submit}>
-                    {/* Username field */}
-                    <label className="label mt-4">Username</label>
-                    <input 
-                        type="text" 
-                        placeholder="Hayati Ali" 
-                        required 
-                        className="form-control" 
+
+                    <label>Username</label>
+                    <input
+                        type="text"
+                        className="form-control"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)} 
-                    /> 
-                    <br /><br />
-                    
-                    {/* Email field */}
-                    <label className="label">Email</label>
-                    <input 
-                        type="email" 
-                        placeholder="your@gmail.com"  
-                        required 
-                        className="form-control" 
+                        onChange={(e) => setUsername(e.target.value)}
+                        onFocus={() => setFocusedField("username")}
+                        onBlur={() => setFocusedField("")}
+                        style={glowStyle("username")}
+                        required
+                    />
+                    <br />
+
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        className="form-control"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)} 
-                    /> 
-                    <br /><br />
-                    
-                    {/* Password field with visibility toggle */}
-                    <label className="label">Password</label>
-                    <div className="password-container" style={{ position: "relative" }}>
+                        onChange={(e) => setEmail(e.target.value)}
+                        onFocus={() => setFocusedField("email")}
+                        onBlur={() => setFocusedField("")}
+                        style={glowStyle("email")}
+                        required
+                    />
+                    <br />
+
+                    <label>Password</label>
+
+                    <div style={{ position: "relative" }}>
+
                         <input
                             type={showPassword ? "text" : "password"}
-                            placeholder="******"
                             className="form-control"
-                            required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onFocus={() => setFocusedField("password")}
+                            onBlur={() => setFocusedField("")}
+                            style={glowStyle("password")}
+                            required
                         />
-                        {/* Toggle password visibility emoji */}
+
                         <span
                             onClick={() => setShowPassword(!showPassword)}
                             style={{
@@ -132,57 +195,86 @@ const SignUp = () => {
                                 right: "10px",
                                 top: "50%",
                                 transform: "translateY(-50%)",
-                                cursor: "pointer",
-                                fontSize: "1.5em",
+                                cursor: "pointer"
                             }}
                         >
                             {showPassword ? "🙉" : "🙈"}
                         </span>
-                    </div>
-                    <br /><br />
 
-                    {/* Phone field */}
-                    <label className="label">Phone</label>                    
-                    <input 
-                        type="tel" 
-                        placeholder="254*********"  
-                        required 
-                        className="form-control" 
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)} 
-                    /> 
+                    </div>
+
                     <br />
 
-                    {/* Checkbox for agreeing to terms */}
-                    <div className="form-check d-flex align-items-center mb-3">
+                    <label>Phone</label>
+
+                    <input
+                        type="tel"
+                        className="form-control"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        onFocus={() => setFocusedField("phone")}
+                        onBlur={() => setFocusedField("")}
+                        style={glowStyle("phone")}
+                        placeholder="254712345678"
+                        required
+                    />
+
+                    <br />
+
+                    <div className="form-check mb-3">
+
                         <input
                             type="checkbox"
-                            className="form-check-input me-2"
-                            id="rememberMe"
+                            className="form-check-input"
+                            id="agreeToTerms"
                             checked={agreeToTerms}
-                            onChange={handleCheckboxChange}
+                            onChange={() => setAgreeToTerms(!agreeToTerms)}
                         />
-                        <label className="form-check-label remember-me-text" htmlFor="rememberMe">
-                            I agree to the Terms of Service and Privacy Policy
-                        </label>
-                    </div><br />
 
-                    {/* Submit button */}
-                    <input
+                        <label
+                            className="form-check-label"
+                            htmlFor="agreeToTerms"
+                        >
+                            I agree to Terms and Conditions
+                        </label>
+
+                    </div>
+
+                    <button
                         type="submit"
-                        value={loading ? "Signing Up..." : "Sign Up"}
-                        className="button text-dark"
-                        disabled={loading || !agreeToTerms} // Disable if loading or terms not agreed
-                    /><br />
+                        className="btn w-100"
+                        disabled={loading || !agreeToTerms}
+                        style={{
+                            backgroundColor: '#6F4F1F',
+                            color: 'white',
+                            border: 'none',
+                            fontWeight: '600',
+                            letterSpacing: '1px',
+                            transition:
+                                'box-shadow 0.3s ease, transform 0.1s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.boxShadow =
+                                '0 0 14px 4px rgba(255, 193, 7, 0.7)';
+                            e.target.style.transform = 'scale(1.02)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.boxShadow = 'none';
+                            e.target.style.transform = 'scale(1)';
+                        }}
+                    >
+                        {loading ? "Signing Up..." : "Sign Up"}
+                    </button>
+
                 </form>
 
-                {/* Navigation link to signin */}
-                <p className="text-dark" id="label">
-                    Already have an account? <Link to="/signin">Sign In</Link>
+                <p className="mt-3">
+                    Already have an account?{" "}
+                    <Link to="/signin">Sign In</Link>
                 </p>
+
             </div>
 
-            {/* Footer component */}
             <Footer />
         </div>
     );

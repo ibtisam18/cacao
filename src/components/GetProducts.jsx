@@ -2,181 +2,408 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { FaShoppingCart } from "react-icons/fa";
+
 import Footer from './Footer';
 import NavBar from './NavBar';
 
+const IMG_URL = "https://Ibtisam.pythonanywhere.com/static/images/";
+
 const GetProduct = () => {
+
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 6;
 
   const navigate = useNavigate();
 
-  const getproducts = async () => {
-    setLoading("Please wait...");
+  // ---------------- FETCH PRODUCTS ----------------
+  const getProducts = async () => {
+
+    setLoading(true);
+    setError("");
+
     try {
-      const response = await axios.get("https://Ibtisam.pythonanywhere.com/api/get_product_details");
-      setProducts(response.data);
-      setLoading("");
-    } catch (error) {
-      setLoading("");
-      setError(error.message);
+
+      const response = await axios.get(
+        "https://Ibtisam.pythonanywhere.com/api/get_product_details"
+      );
+
+      const data = Array.isArray(response.data)
+        ? response.data
+        : [];
+
+      setProducts(data);
+      setFilteredProducts(data);
+
+    } catch (err) {
+
+      console.log("Fetch error:", err);
+      setError("Failed to load products. Please refresh.");
+
+    } finally {
+
+      setLoading(false);
+
     }
   };
 
   useEffect(() => {
-    getproducts();
+    getProducts();
   }, []);
 
+  // ---------------- SEARCH ----------------
   useEffect(() => {
-    if (!products) return;
-    const filtered = products.filter((product) =>
-      product.product_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.product_description.toLowerCase().includes(searchQuery.toLowerCase())
+
+    if (!searchQuery.trim()) {
+
+      setFilteredProducts(products);
+      setCurrentPage(1);
+      return;
+
+    }
+
+    const q = searchQuery.toLowerCase();
+
+    const filtered = products.filter(
+      (p) =>
+        p.product_name?.toLowerCase().includes(q) ||
+        p.product_description?.toLowerCase().includes(q)
     );
+
     setFilteredProducts(filtered);
-    setCurrentPage(1); // Reset to first page on new search
+    setCurrentPage(1);
+
   }, [searchQuery, products]);
 
-  const img_url = "https://Ibtisam.pythonanywhere.com/static/images/";
+  // ---------------- PAGINATION ----------------
+  const totalPages = Math.ceil(
+    filteredProducts.length / itemsPerPage
+  );
 
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+  const startIndex =
+    (currentPage - 1) * itemsPerPage;
 
+  const paginatedItems =
+    filteredProducts.slice(
+      startIndex,
+      startIndex + itemsPerPage
+    );
+
+  // ---------------- BUY NOW ----------------
+  const handleBuyNow = (product) => {
+
+    navigate('/mpesapayment', {
+      state: { product }
+    });
+
+  };
+
+  // ---------------- ADD TO CART ----------------
+  const handleAddToCart = (product) => {
+
+    let cart =
+      JSON.parse(localStorage.getItem("cart"))
+      || [];
+
+    const existingProductIndex =
+      cart.findIndex(
+        (item) =>
+          item.product_id === product.product_id
+      );
+
+    if (existingProductIndex !== -1) {
+
+      // INCREASE QUANTITY
+      cart[existingProductIndex].quantity =
+        (cart[existingProductIndex].quantity || 1) + 1;
+
+    } else {
+
+      // ADD NEW PRODUCT
+      cart.push({
+        ...product,
+        quantity: 1
+      });
+
+    }
+
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(cart)
+    );
+
+    // REFRESH UI
+    setProducts([...products]);
+
+  };
+
+  // ---------------- GET PRODUCT QUANTITY ----------------
+  const getProductQuantity = (productId) => {
+
+    let cart =
+      JSON.parse(localStorage.getItem("cart"))
+      || [];
+
+    const item = cart.find(
+      (item) => item.product_id === productId
+    );
+
+    return item ? item.quantity : 0;
+
+  };
+
+  // ---------------- UI ----------------
   return (
-    <div className="container-fluid p-0" style={{ backgroundColor: "#F4E1D2" }}>
-      <NavBar />
-      <br /><br />
-      {loading && <div className="alert alert-primary mt-3" style={{ backgroundColor: "#D2B48C" }}>{loading}</div>}
-      {error && <div className="alert alert-danger mt-3">{error}</div>}
 
-      <h1 className="text-center" style={{ color: "#6F4F1F", fontFamily: "'Georgia', serif" }}>Our Chocolate Collection</h1>
-      <p className="text-center" style={{ color: "#4B2E06", fontSize: "1.2rem" }}>
-        Explore our handcrafted selection of premium chocolates made with the finest ingredients
+    <div
+      className="container-fluid p-0"
+      style={{ backgroundColor: "#F4E1D2" }}
+    >
+
+      <NavBar />
+
+      <br />
+      <br />
+
+      {/* LOADING */}
+      {loading && (
+
+        <div className="alert alert-primary text-center">
+          Loading products...
+        </div>
+
+      )}
+
+      {/* ERROR */}
+      {error && (
+
+        <div className="alert alert-danger text-center">
+          {error}
+        </div>
+
+      )}
+
+      {/* TITLE */}
+      <h1
+        className="text-center"
+        style={{ color: "#6F4F1F" }}
+      >
+        Our Chocolate Collection
+      </h1>
+
+      <p
+        className="text-center"
+        style={{ color: "#4B2E06" }}
+      >
+        Explore our premium chocolates
       </p>
+
       <hr />
 
-      <div className='text-center my-4'>
-        <h5 className="mb-3" style={{ color: "#6F4F1F" }}>Explore Pictures</h5>
+      {/* SEARCH */}
+      <div className="text-center my-4">
+
         <input
           type="search"
-          placeholder="Search for a product..."
+          placeholder="Search product..."
           className="form-control w-75 mx-auto shadow-sm"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{
-            borderRadius: "30px",
-            borderColor: "#6F4F1F",
-            padding: "12px",
-            fontSize: "1.1rem",
-          }}
-          onFocus={(e) => e.target.style.borderColor = "#FFC107"}
+          onChange={(e) =>
+            setSearchQuery(e.target.value)
+          }
         />
+
       </div>
 
+      {/* PRODUCTS GRID */}
       <div className="row gx-3 gy-4 px-3">
-        {paginatedProducts.map((product, index) => (
-          <div
-            className="col-sm-6 col-md-4 d-flex justify-content-center"
-            key={index}
-          >
+
+        {!loading && paginatedItems.length === 0 ? (
+
+          <h4 className="text-center text-muted">
+            No products found
+          </h4>
+
+        ) : (
+
+          paginatedItems.map((product, index) => (
+
             <div
-              className="card"
-              style={{
-                width: "95%",
-                borderRadius: "15px",
-                backgroundColor: "#D2B48C",
-                boxShadow: "0 6px 15px rgba(0, 0, 0, 0.3)",
-                transition: "transform 0.3s",
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.03)"}
-              onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
+              className="col-sm-6 col-md-4 d-flex justify-content-center"
+              key={product.id || index}
             >
-              <img
-                src={img_url + product.product_photo}
-                alt={product.product_name}
-                className="card-img-top"
+
+              <div
+                className="card shadow-lg border-0 position-relative"
                 style={{
-                  height: "260px",
-                  objectFit: "cover",
-                  borderRadius: "15px 15px 0 0",
+                  width: "95%",
+                  borderRadius: "15px",
+                  backgroundColor: "#D2B48C"
                 }}
-              />
-              <div className="card-body d-flex flex-column">
-                <h5 className="text-dark" style={{ fontSize: "1rem", fontWeight: "bold" }}>{product.product_name}</h5>
-                <p className="text-muted small">{product.product_description}</p>
-                <p className="text-success fw-bold mb-3">Ksh. {product.product_cost}</p>
-                <button
-                  className="btn btn-warning mt-auto w-100"
-                  style={{
-                    borderRadius: "20px",
-                    backgroundColor: "#6F4F1F",
-                    color: "white",
-                    fontWeight: "bold",
-                    fontSize: "0.9rem"
-                  }}
-                  onClick={() => navigate('/mpesapayment', { state: { product } })}
-                >
-                  Buy Now!
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+              >
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="d-flex justify-content-center my-4">
-          <nav>
-            <ul className="pagination pagination-lg">
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <button
-                  className="page-link"
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  style={{ backgroundColor: "#fff", color: "#6F4F1F", borderColor: "#6F4F1F" }}
-                >
-                  Previous
-                </button>
-              </li>
+                {/* QUANTITY BADGE */}
+                {getProductQuantity(product.product_id) > 0 && (
 
-              {Array.from({ length: totalPages }, (_, i) => (
-                <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                  <button
-                    className="page-link"
-                    onClick={() => setCurrentPage(i + 1)}
+                  <div
                     style={{
-                      backgroundColor: currentPage === i + 1 ? "#C68E17" : "#fff",
-                      color: currentPage === i + 1 ? "#fff" : "#6F4F1F",
-                      borderColor: "#6F4F1F"
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      backgroundColor: "#4E3629",
+                      color: "white",
+                      width: "35px",
+                      height: "35px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      fontWeight: "bold",
+                      zIndex: 10
                     }}
                   >
-                    {i + 1}
-                  </button>
-                </li>
-              ))}
 
-              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                <button
-                  className="page-link"
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                  style={{ backgroundColor: "#fff", color: "#6F4F1F", borderColor: "#6F4F1F" }}
-                >
-                  Next
-                </button>
-              </li>
-            </ul>
-          </nav>
+                    {getProductQuantity(product.product_id)}
+
+                  </div>
+
+                )}
+
+                {/* PRODUCT IMAGE */}
+                <img
+                  src={
+                    IMG_URL + product.product_photo
+                  }
+                  alt={product.product_name}
+                  className="card-img-top"
+                  style={{
+                    height: "260px",
+                    objectFit: "cover",
+                    borderRadius:
+                      "15px 15px 0 0"
+                  }}
+                  onError={(e) => {
+
+                    e.target.src =
+                      "https://via.placeholder.com/260x260?text=No+Image";
+
+                  }}
+                />
+
+                {/* CARD BODY */}
+                <div className="card-body d-flex flex-column">
+
+                  <h5 className="card-title">
+                    {product.product_name}
+                  </h5>
+
+                  <p className="card-text">
+                    {product.product_description}
+                  </p>
+
+                  <p className="fw-bold">
+                    Ksh {product.product_cost}
+                  </p>
+
+                  {/* BUTTONS */}
+                  <div className="d-flex gap-2 mt-auto">
+
+                    {/* ADD TO CART */}
+                    <button
+                      className="btn"
+                      style={{
+                        backgroundColor: "#4E3629",
+                        color: "white",
+                        width: "55px"
+                      }}
+                      onClick={() =>
+                        handleAddToCart(product)
+                      }
+                    >
+
+                      <FaShoppingCart />
+
+                    </button>
+
+                    {/* BUY NOW */}
+                    <button
+                      className="btn flex-grow-1"
+                      style={{
+                        backgroundColor: "#6F4F1F",
+                        color: "white"
+                      }}
+                      onClick={() =>
+                        handleBuyNow(product)
+                      }
+                    >
+
+                      Buy Now
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          ))
+
+        )}
+
+      </div>
+
+      {/* PAGINATION */}
+      {totalPages > 1 && (
+
+        <div className="d-flex justify-content-center align-items-center my-4 gap-3">
+
+          <button
+            className="btn btn-outline-dark"
+            disabled={currentPage === 1}
+            onClick={() =>
+              setCurrentPage((p) => p - 1)
+            }
+          >
+
+            Previous
+
+          </button>
+
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            className="btn btn-outline-dark"
+            disabled={
+              currentPage === totalPages
+            }
+            onClick={() =>
+              setCurrentPage((p) => p + 1)
+            }
+          >
+
+            Next
+
+          </button>
+
         </div>
+
       )}
 
       <Footer />
+
     </div>
+
   );
 };
 
