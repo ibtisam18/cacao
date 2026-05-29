@@ -26,7 +26,16 @@ const NavBar = () => {
 
   const handleLogout = () => {
 
+    // Remove user
     localStorage.removeItem("user");
+
+    // Remove token (if you use one)
+    localStorage.removeItem("token");
+
+    // Clear cart
+    localStorage.removeItem("cart");
+
+    // Redirect to sign in
     navigate("/signin");
 
   };
